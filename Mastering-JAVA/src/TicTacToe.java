@@ -2,11 +2,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+//took referennce from an online code on stack overflow 
+
 public class TicTacToe {
 
     private char[][] board = new char[3][3];
+    private String player0;
     private String player1;
-    private String player2;
     private int currentPlayer;
     private char marker1;
     private char marker2;
@@ -14,7 +16,7 @@ public class TicTacToe {
     private BufferedReader reader =
             new BufferedReader(new InputStreamReader(System.in));
 
-    protected void init() {
+    protected void initiate() {
         int counter = 0;
         for (int i = 0; i < 3; i++) {
             for (int i1 = 0; i1 < 3; i1++) {
@@ -25,7 +27,7 @@ public class TicTacToe {
         plays = 0;
     }
 
-    protected void switchPlayers() {
+    protected void changeTurn() {
         if (getCurrentPlayer() == 1) {
             setCurrentPlayer(2);
         } else {
@@ -112,7 +114,7 @@ public class TicTacToe {
         try {
             prompt = reader.readLine();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrplaace();
         }
         return prompt;
     }
@@ -160,19 +162,19 @@ public class TicTacToe {
         this.plays = plays;
     }
 
-    public String getPlayer1() {
+    public String getplayer0() {
+        return player0;
+    }
+
+    public void setplayer0(String player0) {
+        this.player0 = player0;
+    }
+
+    public String getplayer1() {
         return player1;
     }
 
-    public void setPlayer1(String player1) {
+    public void setplayer1(String player1) {
         this.player1 = player1;
-    }
-
-    public String getPlayer2() {
-        return player2;
-    }
-
-    public void setPlayer2(String player2) {
-        this.player2 = player2;
     }
 }
