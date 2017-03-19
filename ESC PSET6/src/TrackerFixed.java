@@ -1,9 +1,9 @@
 import java.util.Map;
 
 class test extends Thread {
-	Tracker tracker;
+	TrackerFixed tracker;
 	
-	public test (Tracker tra) {
+	public test (TrackerFixed tra) {
 		this.tracker = tra;
 	}
 	
@@ -14,12 +14,12 @@ class test extends Thread {
 }
 
 //is this class thread-safe?
-public class Tracker {
+public class TrackerFixed {
 	//@guarded by ???
 	private final Map<String, MutablePoint> locations;
 	
 	//the reference locations, is it going to be an escape?
-	public Tracker(Map<String, MutablePoint> locations) {
+	public TrackerFixed(Map<String, MutablePoint> locations) {
 		//you are getting this data structure from someone else because they still have access to your state space
 		this.locations = locations;
 	}

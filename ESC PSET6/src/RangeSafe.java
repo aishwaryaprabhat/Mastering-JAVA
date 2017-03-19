@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicInteger;
 
 //is this class thread-safe?
-public class Range {
+public class RangeSafe {
 	public final AtomicInteger lower = new AtomicInteger(0);
 	public final AtomicInteger upper = new AtomicInteger(0);
 	//invariant: lower <= upper
