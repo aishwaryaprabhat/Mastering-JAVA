@@ -31,7 +31,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestThreadPoolSample.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestThreadPoolSample.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TestThreadPoolSample.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
@@ -39,6 +39,16 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComparePerformance.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ComparePerformance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -82,6 +92,13 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
       <map>
@@ -107,6 +124,7 @@
         <option value="$PROJECT_DIR$/src/DLExample.java" />
         <option value="$PROJECT_DIR$/src/BoundedBufferTest.java" />
         <option value="$PROJECT_DIR$/src/TestThreadPoolSample.java" />
+        <option value="$PROJECT_DIR$/src/ComparePerformance.java" />
       </list>
     </option>
   </component>
@@ -700,6 +718,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ComparePerformance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
