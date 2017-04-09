@@ -6,8 +6,8 @@ public class MultipleClient {
     public static void main(String[] args) throws Exception {
     	int numberOfClients = 2; //vary this number here
     	long startTime = System.currentTimeMillis();
-        BigInteger n = new BigInteger("5");
-//    	BigInteger n = new BigInteger("4294967297");
+//        BigInteger n = new BigInteger("5");
+    	BigInteger n = new BigInteger("4294967297");
 
     	Thread[] clients = new Thread[numberOfClients];
     	
