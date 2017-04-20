@@ -23,12 +23,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
-public class SecStoreRSA {
+public class CP1_SecStoreRSA {
 
     public final static int SOCKET_PORT = 13267;  // you may change this
-    public final static String FILE_TO_RECEIVE = "RSA_received_file" +
-            LocalTime.now() +
-            LocalDate.now();
+    public final static String FILE_TO_RECEIVE = "RSA_received_file" ;
 
     public final static String SERVER_CERT = "1001763.crt";
 
@@ -112,19 +110,39 @@ public class SecStoreRSA {
         System.out.println("Certificate sent");
 
         // decrypt file
-        rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        rsaCipher.init(Cipher.DECRYPT_MODE, privKey);
+        Cipher decrsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        decrsaCipher.init(Cipher.DECRYPT_MODE, privKey);
 
         // receive file
-        fos = new FileOutputStream(FILE_TO_RECEIVE);
+        fos = new
+                FileOutputStream(FILE_TO_RECEIVE);
         String data;
+        int input_size = is.available();
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
         while ((data = in.readLine()) != null) {
-            fos.write(rsaCipher.doFinal(DatatypeConverter.parseBase64Binary(data)));
+
+
+            fos.write(decrsaCipher.doFinal(DatatypeConverter.parseBase64Binary(data)));
         }
         in.close();
 
 
+    }
+    public static byte[] removeTrailingZeros( byte[] str ){
+        if (str == null){
+            return null;}
+        int length,index ;length = str.length;
+        index = length -1;
+        for (; index >=0;index--)
+        {
+            if (str[index] != 0){
+                break;}
+        }
+        byte[] result = new byte[index + 1];
+        for(int i = 0; i < index + 1; ++i) {
+            result[i] = str[i];
+        }
+        return result;
     }
 }
 
@@ -176,6 +194,3 @@ public class SecStoreRSA {
 //
 //        }
 //    }
-
-
-

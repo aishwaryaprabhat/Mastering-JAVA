@@ -2,17 +2,18 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.Socket;
 import java.security.*;
 import java.security.cert.*;
 import java.util.Arrays;
 
-public class Client {
+public class CP1_Client {
 
-    public final static int SOCKET_PORT = 13267;
-    public final static String SERVER = "localhost";  // change to desired IP
-    public final static String FILE_TO_SEND = "smallFile.txt";  // change this
+    public final static int SOCKET_PORT = 42423;
+    public final static String SERVER = "10.12.91.74";  // change to desired IP
+    public final static String FILE_TO_SEND = "largeFile.txt";  // change this
 
 
     public static void main(String[] args) throws IOException, CertificateException, NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, SignatureException, NoSuchProviderException, InvalidKeyException, IllegalBlockSizeException {
@@ -93,10 +94,13 @@ public class Client {
     }
 
 
-    public static void sendfile(Socket sock, PublicKey ServerKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public static void sendfile(Socket sock, PublicKey ServerKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         FileInputStream fis = null;
         BufferedInputStream bis = null;
         OutputStream os = null;
+        InputStream fisServer = new FileInputStream(FILE_TO_SEND);
+        bis = new BufferedInputStream(fisServer);
+
 
         try{
             // send file
@@ -104,19 +108,30 @@ public class Client {
             byte [] mybytearray  = new byte [(int)myFile.length()];
 
             //encrypt before sending
+
             Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            rsaCipher.init(Cipher.DECRYPT_MODE, ServerKey);
-            rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             rsaCipher.init(Cipher.ENCRYPT_MODE, ServerKey);
-
-
-            fis = new FileInputStream(myFile);
-            bis = new BufferedInputStream(fis);
-            bis.read(mybytearray,0,mybytearray.length);
             os = sock.getOutputStream();
-            System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
-            os.write(mybytearray,0,mybytearray.length);
-            os.flush();
+
+            bis = new BufferedInputStream(fisServer);
+            PrintWriter out = new PrintWriter(os);
+            String data;
+            byte[] buffer = new byte[117];
+            byte[] enc;
+            int count;
+            long startTime = System.currentTimeMillis();
+            while((count = bis.read(buffer))>0){
+                if(count<buffer.length){
+                    enc = rsaCipher.doFinal(Arrays.copyOf(buffer, count));
+                }
+                else{
+                    enc = rsaCipher.doFinal(buffer);
+                }
+                data = DatatypeConverter.printBase64Binary(enc);
+                out.println(data);
+                out.flush();
+            }
+
             System.out.println("Done.");
         } finally {
             if (bis != null) bis.close();
