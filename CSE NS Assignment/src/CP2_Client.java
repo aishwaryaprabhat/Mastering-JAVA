@@ -12,7 +12,7 @@ public class CP2_Client {
     public final static int SOCKET_PORT = 13267;
     public final static String SERVER = "localhost";
     //public final static String SERVER = "10.12.91.74";  // change to desired IP
-    public final static String FILE_TO_SEND = "medianFile.txt";  // change this
+    public final static String FILE_TO_SEND = "smallFile.txt";  // change this
 
 
     public static void main(String[] args) throws IOException, CertificateException, NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, SignatureException, NoSuchProviderException, InvalidKeyException, IllegalBlockSizeException {
@@ -57,7 +57,7 @@ public class CP2_Client {
 
         //get CA cert
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream fisServer = new FileInputStream("CA.crt");
+        FileInputStream fisServer = new FileInputStream("CA.crt");
         X509Certificate CAcert = (X509Certificate)cf.generateCertificate(fisServer);
         X509Certificate serverCert = (X509Certificate) cf.generateCertificate(is); //input stream
         System.out.println("Cert received");
