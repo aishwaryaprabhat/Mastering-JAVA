@@ -19,14 +19,12 @@ import java.security.spec.PKCS8EncodedKeySpec;
 
 public class Done_CP2SecStore {
 
-    public final static int SOCKET_PORT = 13267;  // you may change this
+    public final static int SOCKET_PORT = 13267;
 
     public final static String
-            FILE_TO_RECEIVE = "/Users/ongteckwu/50.005/java/src/nslab3/apple.txt";  // you may change this, I give a
+            FILE_TO_RECEIVE = "received_file";
     public final static String
-            SERVER_CERT = "/Users/ongteckwu/50.005/certificate_request/1001539.crt";  // you may change this, I give a
-    // different name because i don't want to
-    // overwrite the one used by server...
+            SERVER_CERT = "1001763.crt";
 
     public final static int FILE_SIZE = 6022386; // file size temporary hard coded
     // should bigger than the file to be downloaded

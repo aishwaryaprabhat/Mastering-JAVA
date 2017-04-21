@@ -12,9 +12,9 @@ import javax.xml.bind.DatatypeConverter;
 
 public class Done_CP1Client {
 
-    public final static int SOCKET_PORT = 13267;  // you may change this
-    public final static String SERVER = "10.12.54.168";  // enter IP address of localhost here
-    public final static String FILE_TO_SEND = "C:/Users/Anushka/Desktop/3mil.txt";  // you may change this
+    public final static int SOCKET_PORT = 13267;
+    public final static String SERVER = "10.12.91.74";
+    public final static String FILE_TO_SEND = "largeFile.txt";  // you may change this
     public final static int FILE_SIZE = 6022386; // file size temporary hard coded
 
 
@@ -48,7 +48,7 @@ public class Done_CP1Client {
             System.out.println("sent request for cert");
 
             //get CA cert
-            InputStream fisServer = new FileInputStream("C:/Users/Anushka/Downloads/50.005 Computer Systems Engineering/CA.crt");
+            InputStream fisServer = new FileInputStream("CA.crt");
             X509Certificate CAcert = (X509Certificate)cf.generateCertificate(fisServer);
             X509Certificate serverCert = (X509Certificate) cf.generateCertificate(is); //input stream
             System.out.println("received cert");

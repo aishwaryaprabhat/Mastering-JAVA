@@ -14,15 +14,18 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 public class Done_CP1SecStore {
 
     public final static int SOCKET_PORT = 13267;  // you may change this
-
+    public static String time_and_date = String.valueOf(LocalDateTime.now());
     public final static String
-            FILE_TO_RECEIVE = "/Users/ongteckwu/50.005/java/src/nslab3/apple.txt";  // you may change this, I give a
+            FILE_TO_RECEIVE = "received_file" +  time_and_date;  // you may change this, I give a
     public final static String
-            SERVER_CERT = "/Users/ongteckwu/50.005/certificate_request/1001539.crt";  // you may change this, I give a
+            SERVER_CERT = "1001763.crt";  // you may change this, I give a
     // different name because i don't want to
     // overwrite the one used by server...
 
@@ -42,7 +45,7 @@ public class Done_CP1SecStore {
         byte[] encryptedNonce;
         byte[] byteArray;
         Cipher rsaCipher;
-        Path path = Paths.get("/Users/ongteckwu/50.005/certificate_request/privateServer.der");
+        Path path = Paths.get("privateServer.der");
         byteArray = Files.readAllBytes(path);
         EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(byteArray);
 
