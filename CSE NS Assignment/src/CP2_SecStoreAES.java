@@ -1,7 +1,4 @@
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.ServerSocket;
@@ -23,10 +20,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
-public class CP1_SecStoreRSA {
+public class CP2_SecStoreAES {
 
     public final static int SOCKET_PORT = 13267;  // you may change this
-    public final static String FILE_TO_RECEIVE = "RSA_received_file.txt" ;
+    public final static String FILE_TO_RECEIVE = "RSA_received_file" ;
 
     public final static String SERVER_CERT = "1001763.crt";
 
@@ -109,9 +106,14 @@ public class CP1_SecStoreRSA {
         os.write(myCert.getEncoded());
         System.out.println("Certificate sent");
 
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        SecretKey secretKey = keygen.generateKey();
+
+        byte[] encryptedkey = rsaCipher.doFinal(secretKey.getEncoded());
+        os.write(encryptedkey);
         // decrypt file
-        Cipher decrsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        decrsaCipher.init(Cipher.DECRYPT_MODE, privKey);
+        Cipher decaesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        decaesCipher.init(Cipher.DECRYPT_MODE, secretKey);
 
         // receive file
         fos = new
@@ -122,7 +124,7 @@ public class CP1_SecStoreRSA {
         while ((data = in.readLine()) != null) {
 
 
-            fos.write(decrsaCipher.doFinal(DatatypeConverter.parseBase64Binary(data)));
+            fos.write(decaesCipher.update(DatatypeConverter.parseBase64Binary(data)));
         }
         in.close();
 

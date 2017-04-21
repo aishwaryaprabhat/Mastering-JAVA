@@ -1,7 +1,5 @@
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.Socket;
@@ -9,11 +7,12 @@ import java.security.*;
 import java.security.cert.*;
 import java.util.Arrays;
 
-public class CP1_Client {
+public class CP2_Client {
 
     public final static int SOCKET_PORT = 13267;
-    public final static String SERVER = "10.12.91.74";  // change to desired IP
-    public final static String FILE_TO_SEND = "logo.png";  // change this
+    public final static String SERVER = "localhost";
+    //public final static String SERVER = "10.12.91.74";  // change to desired IP
+    public final static String FILE_TO_SEND = "smallFile.txt";  // change this
 
 
     public static void main(String[] args) throws IOException, CertificateException, NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, SignatureException, NoSuchProviderException, InvalidKeyException, IllegalBlockSizeException {
@@ -40,7 +39,7 @@ public class CP1_Client {
         InputStream is = sock.getInputStream();
 
         byte[] nonce = new byte[16];
-        byte[] response = new byte[117];
+        byte[] response = new byte[128];
         int request_for_cert = 1;
         SecureRandom random = new SecureRandom();
         random.nextBytes(nonce);
@@ -58,7 +57,7 @@ public class CP1_Client {
 
         //get CA cert
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream fisServer = new FileInputStream("CA.crt");
+        FileInputStream fisServer = new FileInputStream("CA.crt");
         X509Certificate CAcert = (X509Certificate)cf.generateCertificate(fisServer);
         X509Certificate serverCert = (X509Certificate) cf.generateCertificate(is); //input stream
         System.out.println("Cert received");
@@ -79,7 +78,7 @@ public class CP1_Client {
         //check if nonce matches the decryptedNonce
         if (Arrays.equals(nonce, decryptedNonce)){
             System.out.println("Nonce matched");
-            sendfile(sock, ServerKey);
+            sendfile(sock,decryptedNonce);
             return true;
         }
         else{
@@ -94,7 +93,7 @@ public class CP1_Client {
     }
 
 
-    public static void sendfile(Socket sock, PublicKey ServerKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public static void sendfile(Socket sock,byte[] ServerKey) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         FileInputStream fis = null;
         BufferedInputStream bis = null;
         OutputStream os = null;
@@ -109,8 +108,10 @@ public class CP1_Client {
 
             //encrypt before sending
 
-            Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            rsaCipher.init(Cipher.ENCRYPT_MODE, ServerKey);
+
+            Cipher aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            SecretKey sk = new SecretKeySpec(ServerKey,0,ServerKey.length,"AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, sk);
             os = sock.getOutputStream();
 
             bis = new BufferedInputStream(fisServer);
@@ -122,10 +123,10 @@ public class CP1_Client {
             long startTime = System.currentTimeMillis();
             while((count = bis.read(buffer))>0){
                 if(count<buffer.length){
-                    enc = rsaCipher.doFinal(Arrays.copyOf(buffer, count));
+                    enc = aesCipher.doFinal(Arrays.copyOf(buffer, count));
                 }
                 else{
-                    enc = rsaCipher.doFinal(buffer);
+                    enc = aesCipher.doFinal(buffer);
                 }
                 data = DatatypeConverter.printBase64Binary(enc);
                 out.println(data);
