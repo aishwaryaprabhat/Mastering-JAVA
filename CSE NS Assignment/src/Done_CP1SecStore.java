@@ -107,10 +107,13 @@ public class Done_CP1SecStore {
                         fos.write(rsaCipher.doFinal(DatatypeConverter.parseBase64Binary(data)));
                     }
                     in.close();
+                    is.close();
+                    os.close();
                 } finally {
                     if (fos != null) fos.close();
                     if (bos != null) bos.close();
                     if (sock != null) sock.close();
+
                 }
             }
         }
